@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./Style.css";
-
-interface Props {
+interface props {
   todo: string;
   setTodo: React.Dispatch<React.SetStateAction<string>>;
+  handleAdd: (e: React.FormEvent) => void;
 }
-// const InputField = ({ todo, setTodo }: Props) => {
-const InputField: React.FC<Props> = ({ todo, setTodo }) => {
+
+const InputFeild: React.FC<props> = ({ todo, setTodo, handleAdd }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
-    <form className="input__field">
+    <form
+      className="input__field"
+      onSubmit={(e: React.FormEvent<Element>) => {
+        handleAdd(e);
+        inputRef.current?.blur();
+      }}
+    >
       <input
         type="text"
-        placeholder="Enter task"
-        className="input__box"
+        placeholder="Enter a Todo"
         value={todo}
+        ref={inputRef}
         onChange={(e) => setTodo(e.target.value)}
+        className="input__box"
       />
       <button type="submit" className="input__submit">
         Add
@@ -23,4 +32,4 @@ const InputField: React.FC<Props> = ({ todo, setTodo }) => {
   );
 };
 
-export default InputField;
+export default InputFeild;
